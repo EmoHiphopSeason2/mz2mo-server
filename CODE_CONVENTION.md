@@ -7,7 +7,24 @@
 따라서 보다는 프로덕트의 유지보수 비용이 높은 우선순위를 가지게 되며, 
 이를 위해 Common Code Convention을 어겨야할 경우가 생기면 이를 Breaking Conventions에 맞게 처리합니다.
 
+### Subsets
+해당 코드 컨밴션은 Kotlin표준과 ktlint에 의존합니다.
+
+즉, 해당 컨밴션에 명시되지 않은 내용은 최대한 Kotlin표준 및 ktlint의 컨밴션을 따르도록 합니다.
+
 ### Conventions
+#### Branches
+깃허브 브랜치 전략은 기본적으로 GitFlow 방식을 채택합니다.
+
+**branch_naming** | 브랜치 네이밍 컨밴션
+feature브랜치는 브랜치를 통해 수행할 작업과, 연관된 Jira 테스크를 명시해야합니다.
+
+이를 위해, feature브랜치를 아래와 같은 형태로 네이밍합니다.
+
+`feature/{JIRA_ISSUE_ID}}-{TASK_DESCRIPTION}`
+
+_ex, feature/MZO-32-music-vote-query-api_
+
 #### Remarks
 주석은 코드에서 표현이 불가능한 내용이 아닌, 코드에서 표현하면 안되는 내용을 표현하기위한 목적으로 사용합니다. (예를들어서 해당 코드의 고도화 가능성, 관련 문서 링크 등을 코드에 표현하는것은 지양되어야하므로, 주석에서 표현합니다.)
 
@@ -18,6 +35,13 @@
 로직의 작동방식, 역할 등을 서술할 목적으로 주석을 사용하지 않습니다.
 
 작동방식/역할 등은 클래스/맴버/함수 등의 네이밍을 통해 명시합니다.
+**double_slash_only_single_line_remark** | 단일라인 주석 외 더블 슬래시 사용 금지
+
+2줄 이상으로 되어있는 주석에는 `//`를 통한 주석을 사용하지 않습니다.
+
+**single_line_remrk_must_be_double_slash** | 더블슬래시 외 단일라인 주석 사용 금지
+
+1줄로 되어있는 주석에는 `//`을 통한 주석만을 사용해야합니다.
 
 ## Breaking Conventions
 Breaking Conventions는 Common Code Convention을 준수하는것이 적합하지 않은 상황에서, 이에 대한 맥락을 코드레벨에서 관리하기위한 컨밴션입니다.
