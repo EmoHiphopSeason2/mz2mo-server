@@ -26,6 +26,9 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
+    implementation("com.linecorp.kotlin-jdsl:spring-data-kotlin-jdsl-starter:2.2.1.RELEASE")
+    implementation("org.postgresql:postgresql:42.3.8")
+
     implementation("org.springdoc:springdoc-openapi-ui:1.7.0")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
