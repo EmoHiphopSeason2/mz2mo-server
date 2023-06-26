@@ -1,0 +1,55 @@
+name: CI Test
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+
+    - name: Build with Gradle
+      run: ./gradlew build
+
+    - name: Run tests
+      run: ./gradlew test
+      
+    - name: Comment test results on PR
+      uses: actions/github-script@v4
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        script: |
+          const results = await github.actions.getWorkflowRunJobs({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            run_id: context.runId
+          });
+          const jobId = results.data.jobs.filter(job => job.name === 'Build and Test')[0].id;
+          const jobLogs = await github.actions.getJobLogs({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            job_id: jobId
+          });
+          const testLogs = jobLogs.data.reduce((logs, log) => logs + log.message, '');
+          const prNumber = context.payload.pull_request.number;
+          await github.issues.createComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: prNumber,
+            body: 'Test Results:\n```' + testLogs + '```'
+          });
