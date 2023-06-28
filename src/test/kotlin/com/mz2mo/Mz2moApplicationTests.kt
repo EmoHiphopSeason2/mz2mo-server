@@ -9,5 +9,4 @@ class Mz2moApplicationTests {
     @Test
     fun contextLoads() {
     }
-
 }
