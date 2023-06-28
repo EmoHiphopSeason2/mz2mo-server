@@ -1,0 +1,101 @@
+name: DEVELOP CI/CD
+on:
+  push:
+    branches:
+      - develop
+  workflow_dispatch:
+
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+    environment: DEVELOP
+
+    strategy:
+      matrix:
+        java-version: [ 17 ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set up JDK ${{ matrix.java-version }}
+        uses: actions/setup-java@v3
+        with:
+        java-version: ${{ matrix.java-version }}
+        distribution: 'adopt'
+
+      - name: Get Project Version
+        id: project_version
+        run: |
+            PROJECT_VERSION=$(./gradlew projectVersion | awk '/^> Task :projectVersion$/{getline; print}')
+            echo ::set-output name=PROJECT_VERSION::$PROJECT_VERSION
+
+      - name: Start Docker Compose
+        run: docker-compose up -d
+
+      - name: Gradle Build
+        uses: gradle/gradle-build-action@v2
+
+      - name: Gradle Build
+        run: ./gradlew build --no-daemon
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to NCP Registry
+        uses: docker/login-action@v2
+        with:
+            registry: ${{ secrets.NCP_CONTAINER_REGISTRY }}
+            username: ${{ secrets.NCP_ACCESS_KEY }}
+            password: ${{ secrets.NCP_SECRET_KEY }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.NCP_CONTAINER_REGISTRY }}/mz2mo:${{steps.project_version.outputs.PROJECT_VERSION }}
+  CD:
+    runs-on: ubuntu-latest
+    environment: DEVELOP
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: create remote directory
+        uses: appleboy/ssh-action@master
+        with:
+            host: ${{ secrets.HOST }}
+            username: root
+            key: ${{ secrets.KEY }}
+            port: ${{ secrets.PORT }}
+            script: mkdir -p ~/src/ubuntu
+
+      - name: copy source via ssh key
+        uses: burnett01/rsync-deployments@4.1
+        with:
+            switches: -avzr
+            remote_path: ~/src/ubuntu/
+            remote_host: ${{ secrets.HOST }}
+            remote_port: ${{ secrets.PORT }}
+            remote_user: root
+            remote_key: ${{ secrets.KEY }}
+
+      - name: connect to remote server and run commands
+        uses: appleboy/ssh-action@master
+        with:
+            host: ${{ secrets.HOST }}
+            username: root
+            key: ${{ secrets.KEY }}
+            port: ${{ secrets.PORT }}
+            script: |
+                docker login -u "${{ secrets.NCP_ACCESS_KEY }}" -p "${{ secrets.NCP_SECRET_KEY }}" "${{ secrets.NCP_CONTAINER_REGISTRY }}"
+                cd ~/src/ubuntu
+                echo "start docker-compose up"
+                sudo docker compose -f ~/src/ubuntu/docker-compose-dev.yml pull
+                PROJECT_VERSION=${{ secrets.CI.outputs.PROJECT_VERSION }}
+                sed -i "s/PROJECT_VERSION=.*/PROJECT_VERSION=$PROJECT_VERSION/" .env
+                sudo docker compose -f ~/src/ubuntu/docker-compose-dev.yml --env-file .env up --build -d
+                echo "prune images"
+                sudo docker system prune --all -f
