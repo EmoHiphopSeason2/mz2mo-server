@@ -42,3 +42,7 @@ task("projectVersion") {
         println(project.version)
     }
 }
+
+tasks.jar {
+    enabled = false
+}
