@@ -92,10 +92,8 @@ jobs:
             script: |
                 docker login -u "${{ secrets.NCP_ACCESS_KEY }}" -p "${{ secrets.NCP_SECRET_KEY }}" "${{ secrets.NCP_CONTAINER_REGISTRY }}"
                 cd ~/src/ubuntu
-                echo "start docker-compose up"
-                sudo docker compose -f ~/src/ubuntu/docker-compose-dev.yml pull
                 PROJECT_VERSION=${{ secrets.CI.outputs.PROJECT_VERSION }}
                 sed -i "s/PROJECT_VERSION=.*/PROJECT_VERSION=$PROJECT_VERSION/" .env
+                sudo docker compose -f ~/src/ubuntu/docker-compose-dev.yml pull
                 sudo docker compose -f ~/src/ubuntu/docker-compose-dev.yml --env-file .env up --build -d
-                echo "prune images"
                 sudo docker system prune --all -f
