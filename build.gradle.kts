@@ -27,7 +27,9 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("com.linecorp.kotlin-jdsl:hibernate-kotlin-jdsl-jakarta:2.2.1.RELEASE")
+//    implementation("com.linecorp.kotlin-jdsl:hibernate-kotlin-jdsl-jakarta:2.2.1.RELEASE")
+    implementation("com.linecorp.kotlin-jdsl:kotlin-jdsl-core-jakarta:2.2.1.RELEASE")
+    implementation("com.linecorp.kotlin-jdsl:kotlin-jdsl-query-jakarta:2.2.1.RELEASE")
     implementation("org.hibernate:hibernate-core:6.1.7.Final")
     runtimeOnly("com.h2database:h2")
 }

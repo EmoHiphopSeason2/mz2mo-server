@@ -1,4 +1,4 @@
-package com.mz2mo.global.common.config
+package com.mz2mo.global.common.config.jdsl
 import com.linecorp.kotlinjdsl.QueryFactory
 import com.linecorp.kotlinjdsl.QueryFactoryImpl
 import com.linecorp.kotlinjdsl.query.creator.CriteriaQueryCreatorImpl

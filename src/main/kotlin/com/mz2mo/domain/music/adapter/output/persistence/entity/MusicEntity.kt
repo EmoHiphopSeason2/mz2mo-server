@@ -9,15 +9,13 @@ import jakarta.persistence.Id
 
 @Entity(name = "tbl_music")
 class MusicEntity(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val postId: Long? = null,
-
     val title: String,
 
     val artist: String,
 
-    val key: String,
+    val musicKey: String,
+
+    val thumbnail: String,
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
