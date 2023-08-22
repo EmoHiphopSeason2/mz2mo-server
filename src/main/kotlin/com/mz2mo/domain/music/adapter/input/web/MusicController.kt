@@ -13,7 +13,7 @@ class MusicController(
     private val musicUseCase: MusicQueryUseCase
 ) {
     @GetMapping("/{musicId}")
-    fun queryMusic(@PathVariable musicId: Long): MusicQueryResponse {
+    fun queryMusic(@PathVariable musicId: String): MusicQueryResponse {
         val music = musicUseCase.queryMusic(musicId)
         return MusicQueryResponse(music.musicId, music.title, music.artist, music.musicKey, music.thumbnail)
     }

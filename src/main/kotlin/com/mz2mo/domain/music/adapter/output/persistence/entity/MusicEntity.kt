@@ -6,6 +6,7 @@ import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import java.util.UUID
 
 @Entity(name = "tbl_music")
 class MusicEntity(
@@ -20,5 +21,5 @@ class MusicEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "music_id")
-    val id: Long? = null
+    var id: String = UUID.randomUUID().toString()
 ) : BaseTimeEntity()

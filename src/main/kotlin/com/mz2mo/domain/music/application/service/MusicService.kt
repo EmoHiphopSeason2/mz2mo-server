@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 class MusicService(
     private val musicPersistenceOutport: MusicPersistenceOutport
 ) : MusicQueryUseCase {
-    override fun queryMusic(musicId: Long): Music {
+    override fun queryMusic(musicId: String): Music {
         return musicPersistenceOutport.queryMusic(musicId)
     }
 }
