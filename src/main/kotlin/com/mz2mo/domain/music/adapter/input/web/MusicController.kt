@@ -15,6 +15,6 @@ class MusicController(
     @GetMapping("/{musicId}")
     fun queryMusic(@PathVariable musicId: String): MusicQueryResponse {
         val music = musicUseCase.queryMusic(musicId)
-        return MusicQueryResponse(music.musicId, music.title, music.artist, music.musicKey, music.thumbnail)
+        return MusicQueryResponse.toResponse(music)
     }
 }
