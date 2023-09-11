@@ -5,4 +5,5 @@ import com.mz2mo.domain.music.domain.Music
 interface MusicQueryUseCase {
     fun queryMusic(musicId: String): Music
     fun queryPopularMusic(): List<Music>
+    fun queryRecentlyPlayedMusic(userId: String): List<Music>
 }
