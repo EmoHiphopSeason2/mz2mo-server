@@ -10,11 +10,17 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/v1/music")
 class MusicController(
-    private val musicUseCase: MusicQueryUseCase
+    private val musicQueryUseCase: MusicQueryUseCase
 ) {
     @GetMapping("/{musicId}")
     fun queryMusic(@PathVariable musicId: String): MusicQueryResponse {
-        val music = musicUseCase.queryMusic(musicId)
+        val music = musicQueryUseCase.queryMusic(musicId)
         return MusicQueryResponse.toResponse(music)
+    }
+
+    @GetMapping("/popular")
+    fun queryPopularMusic(): List<MusicQueryResponse> {
+        val music = musicQueryUseCase.queryPopularMusic()
+        return music.map { MusicQueryResponse.toResponse(it) }
     }
 }
