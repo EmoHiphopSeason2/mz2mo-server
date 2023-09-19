@@ -5,7 +5,6 @@ import java.util.UUID
 
 @Service
 class VoteService : QueryVoteUseCase, VoteUseCase {
-
     private val votes = mutableListOf<Vote>()
 
     override fun getVotes(musicId: String): List<Vote> =
@@ -25,10 +24,10 @@ class VoteService : QueryVoteUseCase, VoteUseCase {
         }
     }
 
-    override fun vote(createVote: CreateVote): Vote {
+    override fun vote(createVote: CreateVote, emoji: Emoji): Vote {
         val vote = Vote(
             id = UUID.randomUUID().toString(),
-            emojiId = createVote.emojiId,
+            emoji = emoji,
             userId = createVote.userId,
             musicId = createVote.musicId
         )

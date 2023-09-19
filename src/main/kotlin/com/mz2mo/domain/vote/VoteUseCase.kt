@@ -1,5 +1,5 @@
 package com.mz2mo.domain.vote
 
 fun interface VoteUseCase {
-    fun vote(createVote: CreateVote): Vote
+    fun vote(createVote: CreateVote, emoji: Emoji): Vote
 }

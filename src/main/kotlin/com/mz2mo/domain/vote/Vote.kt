@@ -2,7 +2,7 @@ package com.mz2mo.domain.vote
 
 data class Vote(
     val id: String,
-    val emojiId: String,
+    val emoji: Emoji,
     val userId: String,
     val musicId: String
 )
