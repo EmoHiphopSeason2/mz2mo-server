@@ -29,6 +29,10 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("com.linecorp.kotlin-jdsl:kotlin-jdsl-core-jakarta:2.2.1.RELEASE")
     implementation("com.linecorp.kotlin-jdsl:kotlin-jdsl-query-jakarta:2.2.1.RELEASE")
+
+    // Swagger
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.4")
+
     implementation("org.hibernate:hibernate-core:6.1.7.Final")
     runtimeOnly("com.h2database:h2")
 }
