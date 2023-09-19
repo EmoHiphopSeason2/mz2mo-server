@@ -6,17 +6,15 @@ import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import java.util.UUID
 
-@Entity(name = "tbl_music")
-class MusicEntity(
-    val title: String,
+@Entity(name = "tbl_music_history")
+class MusicHistoryEntity(
+    @Column(name = "music_id")
+    var musicId: String,
 
-    val artist: String,
-
-    val musicKey: String,
-
-    val thumbnail: String,
+    @Column(name = "user_id")
+    var userId: String,
 
     @Id
-    @Column(name = "music_id")
+    @Column(name = "music_history_id")
     var id: String = UUID.randomUUID().toString()
 ) : BaseTimeEntity()

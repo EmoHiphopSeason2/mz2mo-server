@@ -1,5 +1,6 @@
 package com.mz2mo.domain.vote
 
-fun interface QueryVoteUseCase {
+interface QueryVoteUseCase {
     fun getVotes(musicId: String): List<Vote>
+    fun getPopularVotes(): List<Vote>
 }
