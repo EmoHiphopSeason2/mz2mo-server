@@ -9,7 +9,7 @@ import org.springframework.data.domain.Slice
 import org.springframework.stereotype.Service
 
 @Service
-class MusicHistoryServiceQuery(
+class MusicHistoryService(
     private val musicHistoryPersistenceOutport: MusicHistoryPersistenceOutport
 ) : MusicHistoryQueryUseCase, MusicHistorySaveUseCase {
 
