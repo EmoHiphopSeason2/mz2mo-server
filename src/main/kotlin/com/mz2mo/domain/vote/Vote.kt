@@ -5,4 +5,8 @@ data class Vote(
     val emoji: Emoji,
     val userId: String,
     val musicId: String
-)
+) {
+    fun updateVote(emoji: Emoji): Vote {
+        return this.copy(emoji = emoji)
+    }
+}

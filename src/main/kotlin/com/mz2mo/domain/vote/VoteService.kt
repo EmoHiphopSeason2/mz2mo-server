@@ -34,4 +34,19 @@ class VoteService : QueryVoteUseCase, VoteUseCase {
         votes.add(vote)
         return vote
     }
+
+    override fun updateVote(updateVote: UpdateVote, emoji: Emoji): Vote {
+        val vote = votes.find { it.userId == updateVote.userId && it.musicId == updateVote.musicId }
+            ?: throw NoSuchElementException("Vote not found")
+
+        val updatedVote = vote.updateVote(emoji)
+
+        // votes 리스트에서 기존 투표를 삭제하고 업데이트된 투표를 추가합니다.
+        votes.apply {
+            remove(vote)
+            add(updatedVote)
+        }
+
+        return updatedVote
+    }
 }
