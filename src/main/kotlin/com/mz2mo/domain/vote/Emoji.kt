@@ -39,7 +39,7 @@ enum class Emoji(val unicode: String) {
     companion object {
         fun fromUnicode(unicode: String): Emoji {
             return Emoji.values().find { it.unicode == unicode }
-                ?: throw IllegalArgumentException("Invalid Unicode: $unicode")
+                ?: throw InvalidEmojiException("Invalid Unicode: $unicode")
         }
     }
 }
