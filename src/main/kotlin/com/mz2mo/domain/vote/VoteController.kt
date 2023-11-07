@@ -19,7 +19,7 @@ class VoteController(
         @RequestBody createVote: CreateVote,
         @RequestParam unicode: String
     ): Vote {
-        val emoji = Emoji.getEmojiByUnicode(unicode)
+        val emoji = Emoji.fromUnicode(unicode)
         return voteService.vote(createVote, emoji)
     }
 
@@ -28,7 +28,7 @@ class VoteController(
         @RequestBody updateVote: UpdateVote,
         @RequestParam unicode: String
     ): Vote {
-        val emoji = Emoji.getEmojiByUnicode(unicode)
+        val emoji = Emoji.fromUnicode(unicode)
         return voteService.updateVote(updateVote, emoji)
     }
 
