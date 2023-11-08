@@ -1,11 +1,10 @@
 package com.mz2mo.domain.vote
 
 import org.springframework.stereotype.Service
-import java.util.UUID
+import java.util.*
 
 @Service
 class VoteService : QueryVoteUseCase, VoteUseCase {
-
     private val votes = mutableListOf<Vote>()
 
     override fun getVotes(musicId: String): List<Vote> =
@@ -25,14 +24,32 @@ class VoteService : QueryVoteUseCase, VoteUseCase {
         }
     }
 
-    override fun vote(createVote: CreateVote): Vote {
+    override fun vote(createVote: CreateVote, emoji: Emoji): Vote {
         val vote = Vote(
             id = UUID.randomUUID().toString(),
-            emojiId = createVote.emojiId,
+            emojiUnicode = emoji.unicode,
             userId = createVote.userId,
             musicId = createVote.musicId
         )
         votes.add(vote)
         return vote
+    }
+
+    override fun updateVote(updateVote: UpdateVote, emoji: Emoji): Vote {
+        val vote = votes.find { it.userId == updateVote.userId && it.musicId == updateVote.musicId }
+            ?: throw NoSuchElementException(
+                "Vote not found with userId: ${updateVote.userId} and musicId: ${updateVote.musicId}"
+            )
+
+        val updatedVote = vote.updateVote(emoji.unicode)
+
+        // votes 리스트에서 기존 투표를 삭제하고 업데이트된 투표를 추가합니다.
+        // TODO: Repository 생성 후 로직 변경
+        votes.apply {
+            remove(vote)
+            add(updatedVote)
+        }
+
+        return updatedVote
     }
 }
